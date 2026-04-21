@@ -6,7 +6,7 @@
 /*   By: etasci <etasci@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 23:02:57 by etasci            #+#    #+#             */
-/*   Updated: 2026/04/19 22:16:23 by etasci           ###   ########.fr       */
+/*   Updated: 2026/04/21 22:33:36 by etasci           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char	*extract_line(char *stash)
 {
-	int		i;
+	size_t	i;
 	char	*line;
 
 	i = 0;
@@ -41,9 +41,11 @@ static char	*extract_line(char *stash)
 
 static char	*update_stash(char *stash)
 {
-	int		i;
+	size_t	i;
 	char	*new_stash;
 
+	if (!stash)
+		return (NULL);
 	i = 0;
 	while (stash[i] && stash[i] != '\n')
 		i++;
@@ -67,7 +69,7 @@ static char	*read_and_store(int fd, char *stash)
 	if (!buffer)
 		return (NULL);
 	bytes_read = 1;
-	while (!ft_strchr(stash, '\n') && bytes_read != 0)
+	while ((!stash || !ft_strchr(stash, '\n')) && bytes_read != 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
